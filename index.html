@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omar School | تعلم تحليل البيانات</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  
+  body { background: #f8f9fa; color: #333; }
+  
+  /* ===== Header ===== */
+  header {
+    background: #0d1b2a;
+    color: white;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+  }
+  
+  .logo { 
+    font-size: 26px; 
+    font-weight: bold; 
+    color: #f39c12;
+    letter-spacing: 1px;
+  }
+  .logo span { color: white; }
+  
+  nav ul { display: flex; list-style: none; gap: 25px; }
+  nav a { 
+    color: white; 
+    text-decoration: none; 
+    transition: 0.3s; 
+    font-size: 16px;
+  }
+  nav a:hover { color: #f39c12; }
+  
+  .whatsapp-btn {
+    background: #25d366;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+  }
+  .whatsapp-btn:hover { background: #128c7e; transform: scale(1.05); }
+  
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+    color: white;
+    padding: 100px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(243,156,18,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  .hero h1 { 
+    font-size: 52px; 
+    margin-bottom: 20px; 
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1 span { color: #f39c12; }
+  .hero .subtitle { 
+    font-size: 22px; 
+    opacity: 0.9; 
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero p { 
+    font-size: 18px; 
+    opacity: 0.7; 
+    margin-bottom: 35px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .hero button {
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+  .hero button:hover { background: #e67e22; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(243,156,18,0.4); }
+  
+  .hero .outline-btn {
+    background: transparent;
+    border: 2px solid #f39c12;
+    color: #f39c12;
+  }
+  .hero .outline-btn:hover {
+    background: #f39c12;
+    color: white;
+  }
+  
+  /* ===== Stats Bar ===== */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: -50px auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+  }
+  .stat-card {
+    background: white;
+    padding: 25px 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
+  .stat-card .number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #f39c12;
+    margin-bottom: 5px;
+  }
+  .stat-card .label { color: #666; font-size: 15px; }
+  
+  /* ===== Section Title ===== */
+  .section-title {
+    text-align: center;
+    margin: 60px 0 40px;
+    font-size: 36px;
+    color: #0d1b2a;
+  }
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #f39c12;
+    margin: 15px auto 0;
+    border-radius: 2px;
+  }
+  .section-subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 17px;
+    margin-top: -25px;
+    margin-bottom: 40px;
+  }
+  
+  /* ===== Courses Grid ===== */
+  .courses {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 0 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .course-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: 0.4s;
+    border: 2px solid transparent;
+    position: relative;
+  }
+  .course-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 45px rgba(243,156,18,0.25);
+    border-color: #f39c12;
+  }
+  
+  .course-header {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .course-header .icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .course-header h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  .course-header .level {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+  
+  .course-body {
+    padding: 25px;
+  }
+  
+  .course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .info-row .label {
+    color: #666;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-row .value {
+    font-weight: bold;
+    color: #0d1b2a;
+    font-size: 15px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  
+  .course-price {
+    text-align: center;
+    background: #fff8e6;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 2px dashed #f39c12;
+  }
+  .course-price .price {
+    font-size: 30px;
+    font-weight: bold;
+    color: #f39c12;
+  }
+  .course-price .currency {
+    font-size: 16px;
+    color: #666;
+    margin-right: 5px;
+  }
+  
+  .book-btn {
+    width: 100%;
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+  .book-btn:hover { background: #e67e22; transform: scale(1.02); }
+  
+  /* ===== About ===== */
+  .about {
+    background: white;
+    padding: 60px 40px;
+    margin: 40px 0;
+  }
+  .about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .about-text h2 {
+    font-size: 32px;
+    color: #0d1b2a;
+    margin-bottom: 20px;
+  }
+  .about-text h2 span { color: #f39c12; }
+  .about-text p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.9;
+    margin-bottom: 15px;
+  }
+  .about-features {
+    display: grid;
+    gap: 15px;
+    margin-top: 25px;
+  }
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #0d1b2a;
+    font-weight: 500;
+  }
+  .feature-item .check {
+    background: #f39c12;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  
+  .about-visual {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+    border-radius: 20px;
+    padding: 60px 30px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-visual::before {
+    content: '📊';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.05;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .about-visual .big-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .about-visual h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .about-visual p {
+    opacity: 0.8;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* ===== Why Us ===== */
+  .why-us {
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+  }
+  .why-card {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    transition: 0.3s;
+  }
+  .why-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(243,156,26318,0.15);
+  }
+  .why-card .icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .why-card h4 {
+    color: #0d1b2a;
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+  .why-card p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  
+  /* ===== Contact ===== */
+  .contact {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1bb 100%);
+    color: white;
+    padding: 80px 40px;
+    text-align: center;
+  }
+  .contact h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+  .contact h2 span { color: #f39c12; }
+  .contact > p {
+    font-size: 18px;
+    opacity: 0.8;
+    margin-bottom: 40px;
+  }
+  .contact-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .contact-btn {
+    background: #25d366;
+    color: white;
+    padding: 18px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+  }
+  .contact-btn:hover { 
+    background: #128c7e; 
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(37,211,102,0.3);
+  }
+  .contact-btn.email {
+    background: #f39c12;
+  }
+  .contact-btn.email:hover {
+    background: #e67e22;
+    box-shadow: 0 15px 30px rgba(243,156,18,0.3);
+  }
+  
+  /* ===== Floating WhatsApp ===== */
+  .floating-whatsapp {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    background: #25d366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    text-decoration: none;
+    box-shadow: 0 5px 25px rgba(37,211,102,0.5);
+    z-index: 999;
+    animation: bounce 2s infinite;
+    transition: 0.3s;
+  }
+  .floating-whatsapp:hover { 
+    transform: scale(1.1); 
+    background: #128c7e;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  /* ===== Footer ===== */
+  footer {
+    background: #0a1520;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  footer .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  footer .logo-footer {
+    font-size: 22px;
+    color: #f39c12;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  footer p {
+    opacity: 0.6;
+    font-size: 14px;
+  }
+  
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    header { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
+    nav ul { gap: 12px; font-size: 14px; }
+    .logo { font-size: 20px; }
+    .hero h1 { font-size: 32px; }
+    .hero { padding: 60px 20px; }
+    .hero .subtitle { font-size: 18px; }
+    .courses { padding: 0 15px 40px; }
+    .course-card { border-radius: 15px; }
+    .section-title { font-size: 28px; }
+    .about-content { grid-template-columns: 1fr; }
+    .about { padding: 40px 20px; }
+    .why-us { padding: 40px 20px; }
+    .contact { padding: 60px 20px; }
+    .contact h2 { font-size: 28px; }
+    .floating-whatsapp { width: 55px; height: 55px; font-size: 28px; bottom: 20px; left: 20px; }
+    .stats { margin: -30px auto 30px; }
+    .stat-card .number { font-size: 28px; }
+    .whatsapp-btn { padding: 8px 15px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">Omar <span>School</span></div>
+  <nav>
+    <ul>
+      <li><a href="#home">الرئيسية</a></li>
+      <li><a href="#courses">الكورسات</a></li>
+      <li><a href="#about">من أنا</a></li>
+      <li><a href="#contact">تواصل</a></li>
+    </ul>
+  </nav>
+  <a href="https://wa.me/201115705453?text=مرحباً%20Omar%20School%20👋%20عايز%20أعرف%20تفاصيل%20أكتر%20عن%20الكورسات" 
+     target="_blank" 
+     class="whatsapp-btn">
+    💬 احجز الآن
+  </a>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <h1>اتعلم <span>تحليل البيانات</span><br>من الصفر للاحتراف</h1>
+  <p class="subtitle">مع Omar School 🎓</p>
+  <p>كورسات عملية 100% في Excel و SQL، هتخليك محلل بيانات محترف جاهز لسوق العمل</p>
+  <div class="hero-buttons">
+    <button onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+      📚 شوف الكورسات
+    </button>
+    <a href="https://wa.me/201115705453" target="_blank" style="text-decoration: none;">
+      <button class="outline-btn">💬 احجز الآن</button>
+    </a>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-card">
+    <div class="number">2</div>
+    <div class="label">كورسات متخصصة</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">30</div>
+    <div class="label">يوم لكل كورس</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">2</div>
+    <div class="label">ساعة يومياً</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">100%</div>
+    <div class="label">تطبيق عملي</div>
+  </div>
+</div>
+
+<!-- Courses -->
+<h2 class="section-title" id="courses">الكورسات المتاحة</h2>
+<p class="section-subtitle">كورسات عملية بمنهج محترف ومتابعة كاملة</p>
+
+<div class="courses">
+
+  <!-- Excel Course -->
+  <div class="course-card">
+    <div class="course-header">
+      <span class="icon">📊</span>
+      <h3>Excel كامل</h3>
+      <div class="level">من الصفر للاحتراف</div>
+    </div>
+    <div class="course-body">
+      <div class="course-info">
+        <div class="info-row">
+          <span class="label">⏰ المدة</span>
+          <span class="value">شهر (30 يوم)</span>
+        </div>
+        <div class="info-row">
+          <span class="label">🕐 المذاكرة</span>
+          <span class="value">ساعتين يومياً</span>
+        </div>
+        <div class="info-row">
+          <span class="label">📅 المواعيد</span>
+          <span class="value">كل يوم</span>
+        </div>
+        <div class="info-row">
+          <span class="label">📚 المحتوى</span>
+          <span class="value">من الصفر للاحتراف</span>
+        </div>
+        <div class="info-row">
+          <span class="label">💻 النوع</span>
+          <span class="value">أونلاين مباشر</span>
+        </div>
+      </div>
+      
+      <div class="course-price">
+        <span class="currency">جنيه</span>
+        <span class="price">1500</span>
+      </div>
+      
+      <a href="https://wa.me/201115705453?text=مرحباً%20👋%20عايز%20أحجز%20كورس%20Excel%20كامل%20(1500%20جنيه)" 
+         target="_blank" 
+         class="book-btn">
+        💬 احجز الكورس الآن
+      </a>
+    </div>
+  </div>
+
+  <!-- SQL Course -->
+  <div class="course-card">
+    <div class="course-header">
+      <span class="icon">🗄️</span>
+      <h3>SQL</h3>
+      <div class="level">احتراف قواعد البيانات</div>
+    </div>
+    <div class="course-body">
+      <div class="course-info">
+        <div class="info-row">
+          <span class="label">⏰ المدة</span>
+          <span class="value">شهر (30 يوم)</span>
+        </div>
+        <div class="info-row">
+          <span class="label">🕐 المذاكرة</span>
+          <span class="value">ساعتين يومياً</span>
+        </div>
+        <div class="info-row">
+          <span class="label">📅 المواعيد</span>
+          <span class="value">كل يوم</span>
+        </div>
+        <div class="info-row">
+          <span class="label">📚 المحتوى</span>
+          <span class="value">من الصفر للاحتراف</span>
+        </div>
+        <div class="info-row">
+          <span class="label">💻 النوع</span>
+          <span class="value">أونلاين مباشر</span>
+        </div>
+      </div>
+      
+      <div class="course-price">
+        <span class="currency">جنيه</span>
+        <span class="price">3000</span>
+      </div>
+      
+      <a href="https://wa.me/201115705453?text=مرحباً%20👋%20عايز%20أحجز%20كورس%20SQL%20(3000%20جنيه)" 
+         target="_blank" 
+         class="book-btn">
+        💬 احجز الكورس الآن
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-content">
+    <div class="about-text">
+      <h2>ليه تتعلم مع <span>Omar School</span>؟</h2>
+      <p>
+        أهلاً بيك 👋<br>
+        Omar School هدفها إنها تخليك محلل بيانات محترف، مش بس حد عارف يفتح Excel.
+        هنشتغل على مشاريع حقيقية، وأمثلة عملية من السوق، وهتخرج من الكورس وإنت قادر تشتغل على أرض الواقع.
+      </p>
+      
+      <div class="about-features">
+        <div class="feature-item">
+          <span class="check">✓</span>
+          <span>شغل عملي 100% بدون حفظ نظري</span>
+        </div>
+        <div class="feature-item">
+          <span class="check">✓</span>
+          <span>متابعة يومية ورد على كل الأسئلة</span>
+        </div>
+        <div class="feature-item">
+          <span class="check">✓</span>
+          <span>مشاريع حقيقية تدخل بيها سوق العمل</span>
+        </div>
+        <div class="feature-item">
+          <span class="check">✓</span>
+          <span>مجموعة طلاب تشتغل معاهم وتتعلم منهم</span>
+        </div>
+        <div class="feature-item">
+          <span class="check">✓</span>
+          <span>سعر مناسب وهتتعلم بجد</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="about-visual">
+      <div class="big-icon">🎓</div>
+      <h3>ابدأ رحلتك دلوقتي</h3>
+      <p>خد أول خطوة في طريق تحليل البيانات</p>
+    </div>
+  </div>
+</section>
+
+<!-- Why Us -->
+<section class="why-us">
+  <h2 class="section-title">ليه Omar School؟</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <span class="icon">⚡</span>
+      <h4>تعلم سريع</h4>
+      <p>منهج مركّز يخليك تتعلم بسرعة وبدون حشو</p>
+    </div>
+    <div class="why-card">
+      <span class="icon">🎯</span>
+      <h4>شغل حقيقي</h4>
+      <p>مشاريع عملية من السوق المصري والعالمي</p>
+    </div>
+    <div class="why-card">
+      <span class="icon">💬</span>
+      <h4>دعم مباشر</h4>
+      <p>تواصل معايا على واتساب في أي وقت</p>
+    </div>
+    <div class="why-card">
+      <span class="icon">🏆</span>
+      <h4>شهادة إتمام</h4>
+      <p>هتاخد شهادة بعد ما تخلص الكورس</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <h2>تواصل <span>معايا</span></h2>
+  <p>احجز كورسك أو اسأل عن أي حاجة</p>
+  
+  <div class="contact-buttons">
+    <a href="https://wa.me/201115705453?text=مرحباً%20Omar%20School%20👋" 
+       target="_blank" 
+       class="contact-btn">
+      💬 واتساب: 01115705453
+    </a>
+  </div>
+</section>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/201115705453?text=مرحباً%20👋%20عايز%20أعرف%20تفاصيل%20أكتر" 
+   target="_blank" 
+   class="floating-whatsapp"
+   title="تواصل معي على واتساب">
+  💬
+</a>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-content">
+    <div class="logo-footer">Omar School</div>
+    <p>© 2025 Omar School - جميع الحقوق محفوظة</p>
+    <p style="margin-top: 8px;">صُنع بـ ❤️ لتعليم تحليل البيانات</p>
+  </div>
+</footer>
+
+</body>
+</html>
